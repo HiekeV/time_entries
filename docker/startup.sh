@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Run Laravel migration (by force, since it would be a prod-environment)
-php src/artisan migrate --force
+php artisan migrate --force
 
 sed -i "s,LISTEN_PORT,$PORT,g" /etc/nginx/nginx.conf
 
