@@ -1,4 +1,7 @@
 #!/bin/sh
 
-# Run Laravel migration (by force, since it would be a prod-environment)
+# Wait for the application to be ready
+while [ ! -f /tmp/app_ready ]; do sleep 1; done
+
+# Run Laravel migration
 php artisan migrate --force

@@ -5,7 +5,7 @@ RUN apk add --no-cache nginx wget \
     && docker-php-ext-install pdo pdo_mysql  # Install PDO and PDO MySQL extensions
 
     
-# Create directories for Nginx and application
+# Create directories for Nginx
 RUN mkdir -p /run/nginx
 
 # Copy Nginx configuration
@@ -24,11 +24,8 @@ RUN cd /app && \
 # Set permissions
 RUN chown -R www-data: /app
 
+# Make the startup and migration scripts executable
+RUN chmod +x /app/docker/startup.sh /app/db-migration.sh
+
 # Start script for Nginx and PHP-FPM
-CMD sh /app/docker/startup.sh
-
-# Make the file executable, or use "chmod 777" instead of "chmod +x"
-RUN chmod +x /app/db-migration.sh
-
-# This will run the shell file at the time when container is up-and-running successfully (and NOT at the BUILD time)
-ENTRYPOINT ["/app/db-migration.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
